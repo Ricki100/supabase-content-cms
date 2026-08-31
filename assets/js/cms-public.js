@@ -149,10 +149,8 @@
           <div class="blog-card-title">${escapeHtml(item.title)}</div>
         </div>
       </a>`).join('');
-      const shouldLoop = posts.length > 1;
-      const duplicateCards = cards.replaceAll('<a class="blog-card"', '<a class="blog-card" tabindex="-1"');
-      track.classList.toggle('is-static', !shouldLoop);
-      track.innerHTML = `<div class="carousel-set">${cards}</div>${shouldLoop ? `<div class="carousel-set" aria-hidden="true">${duplicateCards}</div>` : ''}`;
+      track.classList.add('is-static');
+      track.innerHTML = `<div class="carousel-set">${cards}</div>`;
       activateMediaFallbacks(track);
       section.hidden = false;
     } catch (error) { console.error('Could not load blog posts.', error); }
