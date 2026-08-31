@@ -2,9 +2,17 @@
 
 A ready-to-connect CMS for static websites. It includes a blog and project editor, media uploads, branding, SEO fields, drafts, and publishing.
 
+## 🤖 Quickest setup: use your LLM
+
+Give this repository to your AI coding assistant and paste:
+
+> Read the README and set up this CMS for my website. Help me create the Supabase database, run the included schema, connect the project, and assign my admin user. Ask me only for details you cannot determine yourself.
+
+The LLM can read the included files and guide you through the complete setup.
+
 ## Quick setup
 
-Ask your AI coding assistant to connect this package to your website, then complete these steps:
+If you prefer to set it up yourself:
 
 1. Create a Supabase project.
 2. Open the Supabase **SQL Editor** and run [`supabase/schema.sql`](supabase/schema.sql). This creates the database, security rules, and media storage.
