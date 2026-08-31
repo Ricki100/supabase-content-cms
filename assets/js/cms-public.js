@@ -56,6 +56,16 @@
         }
       });
     });
+    doc.querySelectorAll('table').forEach((table) => {
+      if (table.parentElement?.classList.contains('table-scroll')) return;
+      const wrapper = doc.createElement('div');
+      wrapper.className = 'table-scroll';
+      wrapper.setAttribute('role', 'region');
+      wrapper.setAttribute('aria-label', table.getAttribute('aria-label') || 'Scrollable data table');
+      wrapper.tabIndex = 0;
+      table.before(wrapper);
+      wrapper.append(table);
+    });
     return doc.body.innerHTML;
   }
 
