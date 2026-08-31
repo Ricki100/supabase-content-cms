@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMS integration example</title>
+</head>
+<body>
+  <main>
+    <section data-cms-blog hidden>
+      <h1>Latest articles</h1>
+      <div data-cms-blog-grid></div>
+    </section>
+
+    <section data-cms-projects hidden>
+      <h2>Projects</h2>
+      <div data-cms-project-grid></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.4/dist/umd/supabase.min.js"></script>
+  <script src="/assets/js/supabase-config.js"></script>
+  <script src="/assets/js/cms-public.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+/* Consistent 1920 x 1080 presentation for CMS cover and content media. */
+.editor-image-uploads{margin:38px 0 0}
+.editor-image-card{display:grid;grid-template-columns:1fr;gap:14px;padding:16px;border:1px solid var(--border,#d9dce3);border-radius:16px;background:var(--surface,#fff)}
+.editor-cover-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.editor-cover-heading p{margin:5px 0 0;color:var(--muted,#687080);font-size:13px}
+.editor-image-preview{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:12px;background:#111}
+.editor-image-preview img{display:block;width:100%;height:100%;object-fit:cover;outline:1px solid rgba(255,255,255,.12);outline-offset:-1px}
+.cover-empty{display:grid;width:100%;height:100%;place-items:center;color:#c9ced8;text-align:center;padding:24px}
+.cover-empty strong{display:block;color:#fff;margin-bottom:4px}
+.media-drop{width:100%;aspect-ratio:16/9;min-height:0;overflow:hidden;background:#111}
+.media-drop img,.media-drop video{display:block;width:100%;height:100%;max-height:none;aspect-ratio:16/9}
+.media-drop img{object-fit:cover}
+.media-drop video{object-fit:contain}
+#previewContent>img,#previewContent>video,#previewContent figure img,#previewContent figure video{display:block;width:100%;aspect-ratio:16/9;background:#111}
+#previewContent>img,#previewContent figure img{object-fit:cover}
+#previewContent>video,#previewContent figure video{object-fit:contain}
+@media(max-width:640px){.editor-cover-heading{display:grid}.editor-cover-heading .btn{width:100%}}
+.block-editable em,.block-editable i,#previewContent em,#previewContent i{font-style:italic!important}
+.format-bar{position:sticky;top:0;z-index:30;background:rgba(20,25,30,.96);box-shadow:0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.text-colour-control{position:relative;display:grid;width:34px;height:34px;place-items:center;border-radius:8px;color:var(--muted);cursor:pointer}
+.text-colour-control:hover{color:var(--text,#fff);background:rgba(255,255,255,.06)}
+.text-colour-control:active{scale:.96}
+.text-colour-control input{position:absolute;inset:auto 5px 3px;width:24px;height:4px;padding:0;border:0;cursor:pointer}
+.text-colour-control input::-webkit-color-swatch-wrapper{padding:0}
+.text-colour-control input::-webkit-color-swatch{border:0;border-radius:2px}
+.branding-form{display:grid;gap:14px;padding:16px}.branding-form>label{display:grid;gap:7px}.branding-form label>span,.branding-palette legend{color:var(--muted);font-size:12px;font-weight:600}.branding-form input[type=text],.branding-form select{width:100%}.branding-palette{display:grid;gap:8px;margin:0;padding:12px;border:1px solid rgba(255,255,255,.09);border-radius:12px}.branding-palette legend{padding:0 5px}.branding-colour-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.branding-colour-row input[type=color]{width:46px;height:34px;padding:3px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:#171c21;cursor:pointer}.brand-live-preview{padding:18px;border:1px solid rgba(255,255,255,.14);border-radius:12px;transition:background .2s,color .2s}.brand-live-preview strong{display:block;font-size:18px}.brand-live-preview p{margin:8px 0 0;line-height:1.55}.brand-live-preview a{color:var(--brand-preview-link);text-decoration:underline}.contrast-report{min-height:18px;margin:0;color:#8ed6a1;font-size:12px;line-height:1.45}.contrast-report.is-warning{color:#ffbf69}.branding-form .button{justify-content:center}.branding-form .field-help.is-error{color:#ff8c8c}
+#previewDialog{background:var(--cms-preview-bg,#0c0f12);color:var(--cms-preview-text,#f4f5f6)}#previewDialog .preview-shell,#previewDialog .preview-content{background:var(--cms-preview-bg,#0c0f12);color:var(--cms-preview-text,#f4f5f6)}#previewDialog a{color:var(--cms-preview-link,#a894ff)}
+.editor-canvas{background:var(--cms-editor-bg,var(--surface-2))}.editor-canvas .writing-area,.editor-canvas .title-input,.editor-canvas .deck-input,.editor-canvas .block-editable{color:var(--cms-editor-text,var(--text))}.editor-canvas .block-editable a{color:var(--cms-editor-link,var(--accent))}
+.branding-palette{opacity:.58;transition:opacity .15s,border-color .15s,box-shadow .15s}.branding-palette.is-current{opacity:1;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.palette-state{margin-left:6px;color:var(--faint);font-size:10px;font-weight:500}.branding-palette.is-current .palette-state{color:#a894ff}

@@ -1,0 +1,76 @@
+.login-help {
+  display: flex;
+  justify-content: flex-end;
+  margin: -8px 0 18px;
+}
+
+.login-help .text-button {
+  color: #a894ff;
+  font-size: 12px;
+}
+
+.dialog-form {
+  padding: 24px;
+}
+
+.dialog-form > p {
+  margin: 0 0 22px;
+  color: var(--muted);
+}
+
+.auth-dialog {
+  width: min(460px, calc(100% - 32px));
+}
+
+.editor-image-uploads {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: 32px 0 4px;
+}
+
+.editor-image-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+}
+
+.editor-image-preview {
+  width: 96px;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--surface-3);
+  color: var(--muted);
+  font-size: 24px;
+}
+
+.editor-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editor-image-card strong { display: block; font-size: 12px; }
+.editor-image-card p { margin: 3px 0 9px; color: var(--faint); font-size: 10px; }
+.image-upload-button { width: max-content; margin: 0; padding: 6px 9px; font-size: 11px; }
+.image-upload-button input { display: none; }
+.image-upload-status { display: block; margin-top: 7px; color: var(--faint); font-size: 9px; }
+.image-upload-status.is-error { color: var(--danger); }
+
+@media (max-width: 720px) {
+  .editor-image-uploads { grid-template-columns: 1fr; }
+}
+#previewContent .post-callout { margin: 28px 0; padding: 22px; border: 1px solid var(--line); border-top: 4px solid var(--accent); background: var(--surface-2); }
+#previewContent .post-callout strong { display: block; margin-bottom: 8px; color: #a894ff; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
+#previewContent .post-cta { margin: 32px 0; padding: 32px; border-radius: 8px; background: var(--accent); color: #fff; text-align: center; }
+#previewContent .post-cta p { font-size: 23px; font-weight: 700; }
+#previewContent .cta-button { display: inline-flex; padding: 12px 18px; border-radius: 6px; background: #fff; color: var(--accent); font-weight: 800; text-decoration: none; }
