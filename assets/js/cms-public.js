@@ -20,6 +20,16 @@
     } catch (_) { return ''; }
   }
 
+  function googleDrivePreviewUrl(value) {
+    try {
+      const url = new URL(String(value || '').trim());
+      if (url.hostname !== 'drive.google.com') return '';
+      const pathMatch = url.pathname.match(/\/file\/d\/([^/]+)/);
+      const id = pathMatch?.[1] || url.searchParams.get('id');
+      return id ? `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview` : '';
+    } catch (_) { return ''; }
+  }
+
   function blogPostUrl(slug) {
     return `/blog/${encodeURIComponent(String(slug || '').trim())}/`;
   }
@@ -47,7 +57,17 @@
 
   function sanitiseRichText(html) {
     const doc = new DOMParser().parseFromString(String(html || ''), 'text/html');
-    doc.querySelectorAll('script,style,iframe,object,embed,form,input,button').forEach((node) => node.remove());
+    doc.querySelectorAll('script,style,object,embed,form,input,button').forEach((node) => node.remove());
+    doc.querySelectorAll('iframe').forEach((frame) => {
+      const src = googleDrivePreviewUrl(frame.getAttribute('src'));
+      if (!src) { frame.remove(); return; }
+      [...frame.attributes].forEach((attribute) => frame.removeAttribute(attribute.name));
+      frame.src = src;
+      frame.title = 'Google Drive video';
+      frame.loading = 'lazy';
+      frame.allow = 'autoplay; fullscreen';
+      frame.setAttribute('allowfullscreen', '');
+    });
     doc.body.querySelectorAll('*').forEach((node) => {
       [...node.attributes].forEach((attribute) => {
         const name = attribute.name.toLowerCase();
