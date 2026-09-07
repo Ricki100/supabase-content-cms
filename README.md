@@ -31,6 +31,17 @@ If you prefer to set it up yourself:
 
 That is the essential setup. The public website can use [`assets/js/cms-public.js`](assets/js/cms-public.js) to display published content; [`examples/integration.html`](examples/integration.html) shows the required script tags and page hooks.
 
+## Add a blog feed anywhere
+
+```html
+<section data-cms-blog data-page-size="3" data-pagination="true" hidden>
+  <div data-cms-blog-grid></div>
+  <nav data-cms-blog-pagination aria-label="Blog pagination"></nav>
+</section>
+```
+
+Add this to any page and style the generated cards for that website. Each section works independently. `data-page-size` controls the number of posts and pagination is optional. Posts are ordered by their original publication date, so editing an older post does not move it to the front.
+
 ## Important
 
 Use only the Supabase **publishable key** in browser code—never use a secret or `service_role` key. For an owner-managed CMS, disable public sign-ups in Supabase after creating the admin.

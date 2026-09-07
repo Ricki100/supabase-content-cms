@@ -121,14 +121,31 @@
   async function fetchPublished(type, options = {}) {
     const client = await getClient();
     if (!client) return [];
-    let query = client.from('content_items').select('*').eq('type', type).eq('status', 'published')
-      .order('featured', { ascending: false }).order('sort_order', { ascending: true })
-      .order('published_at', { ascending: false });
+    let query = client.from('content_items').select('*').eq('type', type).eq('status', 'published');
+    query = type === 'blog'
+      ? query.order('published_at', { ascending: false }).order('id', { ascending: false })
+      : query.order('featured', { ascending: false }).order('sort_order', { ascending: true }).order('published_at', { ascending: false });
     if (options.slug) query = query.eq('slug', options.slug).limit(1);
     if (options.limit) query = query.limit(options.limit);
     const { data, error } = await query;
     if (error) throw error;
     return data || [];
+  }
+
+  async function fetchPublishedBlogPage(page = 1, pageSize = 3) {
+    const client = await getClient();
+    if (!client) return { posts: [], total: 0 };
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+    const { data, count, error } = await client.from('content_items')
+      .select('*', { count: 'exact' })
+      .eq('type', 'blog')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false })
+      .order('id', { ascending: false })
+      .range(from, to);
+    if (error) throw error;
+    return { posts: data || [], total: count || 0 };
   }
 
   async function renderProjects() {
@@ -155,25 +172,58 @@
     } catch (error) { console.error('Could not load projects.', error); }
   }
 
-  async function renderLatestPosts() {
-    const section = document.querySelector('[data-cms-blog]');
-    const track = document.querySelector('[data-cms-blog-grid]');
-    if (!section || !track) return;
+  function blogCards(posts) {
+    return posts.map((item) => `<a class="blog-card" href="${blogPostUrl(item.slug)}">
+      ${cardMediaMarkup(item, 'blog-card-img')}
+      <div class="blog-card-body">
+        <div class="blog-card-meta">${escapeHtml((item.tags || [])[0] || 'Insight')} <span>${new Date(item.published_at).toLocaleDateString('en-ZW', { month: 'short', year: 'numeric' })}</span></div>
+        <div class="blog-card-title">${escapeHtml(item.title)}</div>
+      </div>
+    </a>`).join('');
+  }
+
+  function paginationMarkup(page, pageCount) {
+    return `<button type="button" data-cms-page="prev"${page <= 1 ? ' disabled' : ''}>Previous</button>
+      <span aria-live="polite">Page ${page} of ${pageCount}</span>
+      <button type="button" data-cms-page="next"${page >= pageCount ? ' disabled' : ''}>Next</button>`;
+  }
+
+  async function renderBlogFeed(section, requestedPage = 1) {
+    const track = section.querySelector('[data-cms-blog-grid]');
+    if (!track) return;
+    const pageSize = Math.min(24, Math.max(1, Number.parseInt(section.dataset.pageSize || '3', 10) || 3));
+    const paginated = section.dataset.pagination === 'true';
     try {
-      const posts = await fetchPublished('blog', { limit: 6 });
-      if (!posts.length) return;
-      const cards = posts.map((item) => `<a class="blog-card" href="${blogPostUrl(item.slug)}">
-        ${cardMediaMarkup(item, 'blog-card-img')}
-        <div class="blog-card-body">
-          <div class="blog-card-meta">${escapeHtml((item.tags || [])[0] || 'Insight')} <span>${new Date(item.published_at).toLocaleDateString('en-ZW', { month: 'short', year: 'numeric' })}</span></div>
-          <div class="blog-card-title">${escapeHtml(item.title)}</div>
-        </div>
-      </a>`).join('');
+      const initial = await fetchPublishedBlogPage(1, pageSize);
+      if (!initial.posts.length) return;
+      const pageCount = Math.max(1, Math.ceil(initial.total / pageSize));
+      const page = Math.min(pageCount, Math.max(1, requestedPage));
+      const result = page === 1 ? initial : await fetchPublishedBlogPage(page, pageSize);
       track.classList.add('is-static');
-      track.innerHTML = `<div class="carousel-set">${cards}</div>`;
+      track.innerHTML = `<div class="carousel-set">${blogCards(result.posts)}</div>`;
       activateMediaFallbacks(track);
+      let controls = section.querySelector('[data-cms-blog-pagination]');
+      if (paginated && pageCount > 1) {
+        if (!controls) {
+          controls = document.createElement('nav');
+          controls.dataset.cmsBlogPagination = '';
+          controls.setAttribute('aria-label', 'Blog pagination');
+          track.after(controls);
+        }
+        controls.innerHTML = paginationMarkup(page, pageCount);
+        controls.hidden = false;
+        controls.onclick = (event) => {
+          const direction = event.target.closest('[data-cms-page]')?.dataset.cmsPage;
+          if (!direction) return;
+          renderBlogFeed(section, direction === 'next' ? page + 1 : page - 1);
+        };
+      } else if (controls) controls.hidden = true;
       section.hidden = false;
     } catch (error) { console.error('Could not load blog posts.', error); }
+  }
+
+  function renderLatestPosts() {
+    document.querySelectorAll('[data-cms-blog]').forEach((section) => renderBlogFeed(section));
   }
 
   async function renderBlogIndex() {
