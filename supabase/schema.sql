@@ -27,6 +27,9 @@ create table if not exists public.content_items (
 create index if not exists content_items_public_list_idx
   on public.content_items (type, featured desc, sort_order, published_at desc)
   where status = 'published';
+create index if not exists content_items_blog_published_idx
+  on public.content_items (published_at desc, id desc)
+  where status = 'published' and type = 'blog';
 create index if not exists content_items_author_id_idx on public.content_items (author_id);
 
 alter table public.content_items enable row level security;
